@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+}
+
+#simulation-box {
+  background-color: rgb(100, 0, 0);
+  width: 100vw;
+  height: 100vh;
+}
+
+.boid {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  border-style: solid;
+  border-width: 0 5px 10px 5px;
+  border-color: transparent transparent #4f46e5 transparent;
+  transform-origin: center center;
+}
