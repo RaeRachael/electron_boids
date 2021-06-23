@@ -1,13 +1,12 @@
 const simulationBox = document.getElementById('simulation-box')
 
-const SPEED = 2
 var boidList = []
 
 createDisplay(simulationBox, boidList)
 
 function createDisplay(simulationBox, boidList) {
-  for(var i = 0; i < 20; i++) {
-    boidList.push({x: Math.random()*800, y: Math.random()*600, angle: Math.random()*180})
+  for(var i = 0; i < 50; i++) {
+    boidList.push({x: Math.random()*800, y: Math.random()*600, angle: Math.random()*360, speed: Math.random()*3})
     console.log(boidList[i], "boid")
     const boidDisplay = document.createElement('div')
     boidDisplay.setAttribute("id", `${i}`)
@@ -38,12 +37,15 @@ function stepForward(boid, boidList) {
     }
     var distance = ((otherBoid.x - boid.x)**2 + (otherBoid.y - boid.y)**2)**0.5
     if( distance < 50 ) {
-      boid.angle += Math.sin((boid.angle - otherBoid.angle + 180) * Math.PI / 180) * 10/(distance)**0.5
+      boid.angle += Math.sin((boid.angle - otherBoid.angle + 180) * Math.PI / 180)*10/(distance)**0.5
       boid.angle = (boid.angle+360)%360
+      boid.speed += (otherBoid.speed - boid.speed)/(distance)**0.5
     }
   });
-  boid.x += SPEED * Math.sin(boid.angle * Math.PI / 180)
-  boid.y += SPEED * -Math.cos(boid.angle * Math.PI / 180)
+  // boid.speed += (Math.random() - 0.4) * 0.1
+  boid.angle += (Math.random() - 0.5) * 1
+  boid.x += boid.speed * Math.sin(boid.angle * Math.PI / 180)
+  boid.y += boid.speed * -Math.cos(boid.angle * Math.PI / 180)
   boid.x = (boid.x+800)%800
   boid.y = (boid.y+600)%600
 }

@@ -1,10 +1,12 @@
 body {
-  margin: 0;
+  margin: 20px;
+  background-color: black;
 }
 
 #simulation-box {
+  padding: auto;
   overflow:hidden;
-  background-color: rgb(100, 0, 0);
+  background-color:black;
   width: 800px;
   height: 600px;
 }
