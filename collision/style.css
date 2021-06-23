@@ -1,0 +1,23 @@
+body {
+  margin: 20px;
+  background-color: black;
+}
+
+#simulation-box {
+  padding: auto;
+  overflow:hidden;
+  background-color:black;
+  width: 800px;
+  height: 600px;
+  border: red solid 5px;
+}
+
+.boid {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  border-style: solid;
+  border-width: 0 5px 10px 5px;
+  border-color: transparent transparent #4f46e5 transparent;
+  transform-origin: center center;
+}
