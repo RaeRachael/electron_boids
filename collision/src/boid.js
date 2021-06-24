@@ -48,7 +48,7 @@ class Boid {
   }
 
   collision(direction, boidList) {
-    for(var t = 5; t < 50; t+=5) {
+    for(var t = 2; t < 30; t+=2) {
       var x_test = this.x + t * Math.sin((this.angle+30*direction) * Math.PI / 180)
       var y_test = this.y + t * -Math.cos((this.angle+30*direction) * Math.PI / 180)
       var outOfBounds = this.checkOutOfBounds(x_test, y_test, boidList)
