@@ -2,7 +2,7 @@
 function createBoids(number) {
   var boidList = []
   for(var i = 0; i < number; i++) {
-    boidList.push(new Boid(Math.random()*800, Math.random()*600, Math.random()*360, 1+Math.random()*1, i))
+    boidList.push(new Boid(Math.random()*900, Math.random()*600, Math.random()*360, 1+Math.random()*1, i))
   }
   return boidList
 }
@@ -19,8 +19,8 @@ class Boid {
   }
 
   stepForward(boidList) {
-    if (!this.avoidWall()) {
-      if (!this.avoidBoid(boidList)) {
+    if (!this.needToAvoidWall()) {
+      if (!this.needToAvoidBoid(boidList)) {
         this.flock(boidList)
       } 
     }
@@ -43,54 +43,36 @@ class Boid {
     });
   }
 
-  avoidWall() {
+  needToAvoidWall() {
     var avoid = false
-    for(var angle = -1; angle >= -8; angle--) {
+    for(var angle = -8; angle <= 8; angle++) {
       var distance = this.collisionWall(angle)
-      this.angle += -100/(angle*distance)
+      if (distance === false) continue
+      if (angle === 0) {
+        // this.angle += 50/(distance)
+        // this.speed += 1/1000 * (1 - (distance%1000)/5000)
+      } else {
+        this.angle += -100/(angle*distance)
+      }
       if (distance < 20) {
         avoid = true
       }
-      // this.speed += 1/1000 * (1 - (distance%1000)/5000)
-    }
-    for(var angle = 1; angle <= 8; angle++) {
-      var distance = this.collisionWall(angle)
-      this.angle += -100/(angle*distance)
-      if (distance < 20) {
-        avoid = true
-      }
-      // this.speed += 1/1000 * (1 - (distance%1000)/5000)
     }
     return avoid
-    // var distanceLeft1 = this.collisionWall(-1)
-    // var distanceRight1 = this.collisionWall(1)
-    // var distanceLeft2 = this.collisionWall(-4)
-    // var distanceRight2 = this.collisionWall(4)
-    // var distance = this.collisionWall(0)
-    // this.speed += 0.002 - (distance%1000)/5000
-    // this.angle += 1000*((1/distanceLeft1)**2 + (0.5/distanceLeft2)**2 - (1/distanceRight1)**2 - (0.5/distanceRight2)**2)
-    // if (distance + distanceLeft1 + distanceLeft2 + distanceRight1 + distanceRight2 !== 5000) {
-    //   return true
-    // } else {
-    //   return false
-    // }
   }
 
-  avoidBoid(boidList) {
+  needToAvoidBoid(boidList) {
     var avoid = false
-    for(var angle = -1; angle >= -8; angle--) {
+    for(var angle = -8; angle <= 8; angle++) {
       var distance = this.collisionBoid(angle, boidList)
-      this.angle += -10/(angle*distance)
-      // this.speed += 1/1000 * (1 - (distance%1000)/5000)
-      if (distance < 10) {
-        avoid = true
+      if (distance === false) continue
+      if (angle === 0) {
+        this.angle += 5/(distance)
+        this.speed += 1/1000 * (1 - distance%1000)
+      } else {
+        this.angle += -10/(angle*distance)
       }
-    }
-    for(var angle = 1; angle <= 8; angle++) {
-      var distance = this.collisionBoid(angle, boidList)
-      this.angle += -10/(angle*distance)
-      // this.speed += 1/1000 * (1 - (distance%1000)/5000)
-      if (distance < 10) {
+      if (distance < 20) {
         avoid = true
       }
     }
@@ -105,7 +87,7 @@ class Boid {
         return t
       }
     }
-    return 1000
+    return false
   }
 
   collisionBoid(direction, boidList) {
@@ -116,7 +98,7 @@ class Boid {
         return t
       }
     }
-    return 1000
+    return false
   }
 
   checkWalls(x_test, y_test) {
@@ -128,22 +110,20 @@ class Boid {
   checkBoids(x_test, y_test, boidList) {
     for(var i = 0; i < boidList.length; i++) {
       if(this.id !== i && (x_test - boidList[i].x)**2 + (y_test - boidList[i].y)**2 < 30**2) {
-        return true
+        if (!this.isSimilarPath(boidList[i])) { return boidList[i] }
       }
     }
   }
-}
 
-// checkOutOfBounds(x_test, y_test, boidList) {
-//   if(x_test < 0 || x_test > 800 || y_test < 0 || y_test > 600) {
-//     return true
-//   }
-//   for(var i = 0; i < boidList.length; i++) {
-//     if(this.id !== i && (x_test - boidList[i].x)**2 + (y_test - boidList[i].y)**2 < 20**2) {
-//       console.log(this.x, boidList[i].x, i, this.id, "boid collision")
-//       return true
-//     }
-//   }
-// }
+  isSimilarPath(boid) {
+    if (this.angle + 5 > boid.angle || this.angle - 5 < boid.angle) {
+      return false
+    }
+    if (this.speed + 0.1 > boid.speed || this.speed - 0.1 < boid.speed) {
+      return false
+    }
+    return true
+  }
+}
 
 module.exports.createBoids = createBoids
