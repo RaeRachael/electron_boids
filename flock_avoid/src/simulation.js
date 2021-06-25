@@ -2,7 +2,7 @@ const { createBoids } = require("./src/boid")
 
 const simulationBox = document.getElementById('simulation-box')
 
-var boidList = createBoids(150)
+var boidList = createBoids(500)
 
 createDisplay(simulationBox, boidList)
 
