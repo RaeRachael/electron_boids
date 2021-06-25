@@ -5,11 +5,47 @@ body {
 
 #simulation-box {
   padding: auto;
-  overflow:hidden;
+  overflow: hidden;
   background-color:black;
   width: 900px;
   height: 600px;
+  /* border: red solid 5px; */
+}
+
+.circle {
+  border-radius: 50%;
+  width: 140px;
+  height: 140px;
+  transform: translate(-50%, -50%);
+}
+
+.circle-big {
+  border-radius: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+}
+
+.wall {
   border: red solid 5px;
+}
+
+.top {
+  position: absolute;
+  top: 0px;
+  left: 475px;
+}
+
+.bottom {
+  position: absolute;
+  top: 650px;
+  left: 475px;
+}
+
+.middle {
+  position: absolute;
+  top: 325px;
+  left: 475px;
 }
 
 .boid {
