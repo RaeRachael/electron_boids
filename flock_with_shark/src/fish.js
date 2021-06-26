@@ -27,7 +27,7 @@ class Fish extends Boid{
     this.move(this.speedMax)
   }
 
-  flock() {
+  flock(fishList) {
     this.nearfishs = []
     fishList.forEach(fish => {
       if(this.id === fish.id) {

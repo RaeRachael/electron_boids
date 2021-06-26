@@ -1,12 +1,27 @@
 const { createFish } = require("./src/fish")
 const { createSharks } = require("./src/shark")
 
-const simulationBox = document.getElementById('simulation-box')
+const startingFormButton = document.querySelector("#starting-form")
 
-var fishList = createFish(300)
-var sharkList = createSharks(2)
+startingFormButton.addEventListener("submit", function(event){
+  event.preventDefault();   // stop the form from submitting
+  let fishNumber = document.getElementById("fish-number").value
+  let sharkNumber = document.getElementById("shark-number").value
+  
+  var fishList = createFish(fishNumber)
+  var sharkList = createSharks(sharkNumber)
 
-createDisplay(simulationBox, fishList, sharkList)
+  startingFormButton.innerHTML = ""
+  const simulationBox = document.getElementById('simulation-box')
+  simulationBox.style.visibility="visible"
+
+  createDisplay(simulationBox, fishList, sharkList)
+
+  setInterval(() => {
+    drawSimulation(fishList, sharkList)
+  }, 10);
+
+})
 
 function createDisplay(simulationBox, fishList, sharkList) {
   fishList.forEach(fish => {
@@ -23,17 +38,12 @@ function createDisplay(simulationBox, fishList, sharkList) {
     sharkDisplay.setAttribute("id", `shark-${shark.id}`)
     sharkDisplay.style.left = `${shark.x +25}px`
     sharkDisplay.style.top = `${shark.y +25}px`
-    sharkDisplay.style.borderWidth = `0 ${7*shark.scale}px ${20*shark.scale}px ${7*shark.scale}px`
-    sharkDisplay.style.transform = `translate(-50%, -50%) scale(0.7) rotate(${shark.angle}rad)`
+    sharkDisplay.style.borderWidth = `0 7px 20px 7px`
+    sharkDisplay.style.transform = `translate(-50%, -50%) rotate(${shark.angle}rad)`
     sharkDisplay.classList.add("shark")
     simulationBox.appendChild(sharkDisplay)
-    console.log(shark.scale, sharkDisplay)
   })
 }
-
-setInterval(() => {
-  drawSimulation(fishList, sharkList)
-}, 10);
 
 function drawSimulation(fishList, sharkList) {
   for(var i = 0; i < fishList.length; i++) {
@@ -51,7 +61,6 @@ function displayOnefish(fish, index) {
   fishDisplay.style.left = `${fish.x+25}px`
   fishDisplay.style.top = `${fish.y+25}px`
   fishDisplay.style.transform = `translate(-50%, -50%) rotate(${fish.angle}rad)`
-  fishDisplay.classList.add("fish")
 }
 
 function displayOneShark(shark, index) {
@@ -59,8 +68,5 @@ function displayOneShark(shark, index) {
   sharkDisplay.style.left = `${shark.x+25}px`
   sharkDisplay.style.top = `${shark.y+25}px`
   sharkDisplay.style.borderWidth = `0 ${7*shark.scale}px ${20*shark.scale}px ${7*shark.scale}px`
-  sharkDisplay.style.transform = `translate(-50%, -50%) scale(0.7) rotate(${shark.angle}rad)`
-  sharkDisplay.classList.add("shark")
-  simulationBox.appendChild(sharkDisplay)
-  console.log(shark.scale, sharkDisplay)
+  sharkDisplay.style.transform = `translate(-50%, -50%) rotate(${shark.angle}rad)`
 }

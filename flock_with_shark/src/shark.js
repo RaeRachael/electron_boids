@@ -12,7 +12,6 @@ class Shark extends Boid {
 
   constructor(x,y,xdot,ydot,id) {
     super(x,y,xdot,ydot,id)
-    this.speedMax = 5
     this.food = 100
     this.scale = 1
   }
@@ -23,11 +22,11 @@ class Shark extends Boid {
       this.food = 50
       this.scale -= 0.005
     }
-
     if (this.food > 100) {
       this.food = 50
       this.scale += 0.005
     }
+    this.speedMax = 5 / this.scale
 
     if (this.scale < 0.5 || this.checkWalls(this.x,this.y)) {
       this.rePlace()
@@ -45,7 +44,7 @@ class Shark extends Boid {
       var distance = ((fish.x - this.x)**2 + (fish.y - this.y)**2)**0.5
       if( distance < 60 ) {
         chase = true
-        if (distance < 10) {
+        if (distance < 8 * this.scale) {
           this.feed(fish)
         }
         else {
