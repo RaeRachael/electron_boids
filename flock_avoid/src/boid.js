@@ -42,7 +42,7 @@ class Boid {
         return true
       }
       var distance = ((boid.x - this.x)**2 + (boid.y - this.y)**2)**0.5
-      if( distance < 50 ) {
+      if( distance < 60 ) {
         this.nearBoids.push(boid)
       }
     })
@@ -72,19 +72,19 @@ class Boid {
   spreadOut() {
     this.nearBoids.forEach(nearBoid => {
       var distance = ((nearBoid.x - this.x)**2 + (nearBoid.y - this.y)**2)**0.5
-      this.xdot += (this.x - nearBoid.x) * 2/distance
-      this.ydot += (this.y - nearBoid.y) * 2/distance
+      this.xdot += (this.x - nearBoid.x) * 0.1/distance
+      this.ydot += (this.y - nearBoid.y) * 0.1/distance
     })
   }
 
   alignWith() {
-    this.xdot += (this.xdot - this.averageBoid.xdot) * -0.005
-    this.ydot += (this.ydot - this.averageBoid.ydot) * -0.005
+    this.xdot += (this.xdot - this.averageBoid.xdot) * -0.01
+    this.ydot += (this.ydot - this.averageBoid.ydot) * -0.01
   }
 
   moveToCenter() {
-    this.xdot += (this.x - this.averageBoid.x) * -0.5
-    this.ydot += (this.y - this.averageBoid.y) * -0.5
+    this.xdot += (this.x - this.averageBoid.x) * -0.05
+    this.ydot += (this.y - this.averageBoid.y) * -0.05
   }
 
   needToAvoidWall() {
@@ -93,9 +93,9 @@ class Boid {
       var distance = this.collisionWall(angle)
       if (distance === false) continue
       if (angle !== 0) {
-        this.angle += -1.2/(angle*distance)
+        this.angle += -5/(angle*distance)
       }
-      if (distance < 40) {
+      if (distance < 25) {
         avoid = true
       }
     }
@@ -121,7 +121,7 @@ class Boid {
     if(x_test < 0 || x_test > 1200 || y_test < 0 || y_test > 600) {
       return true
     }
-    var circles = [{x: -25, y: -25}, {x: 1225, y: -25}, {x: -25, y: 625}, {x: 1225, y: 625}]
+    var circles = [{x: -25, y: -25}, {x: 1225, y: -25}, {x: -25, y: 625}, {x: 1225, y: 625}, {x: 600, y: 300}]
     for(var i = 0; i < circles.length; i++) {
       if ( (x_test - circles[i].x)**2 + (y_test - circles[i].y)**2 < 100**2) {
         return true
