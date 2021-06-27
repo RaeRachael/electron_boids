@@ -3,29 +3,42 @@ const {Boid} = require('./boid.js')
 function createFish(number) {
   var fishList = []
   for(var i = 0; i < number; i++) {
-    fishList.push(new Fish(50+Math.random()*1100, 50+Math.random()*500, Math.random()*2, Math.random()*2, i))
+    fishList.push(new Fish(50+Math.random()*1100, 50+Math.random()*500, Math.random()*2, Math.random()*2, 1, i))
   }
   return fishList
 }
 
 class Fish extends Boid{
 
-  constructor(x,y,xdot,ydot,id) {
-    super(x,y,xdot,ydot,id)
+  constructor(x, y, xdot, ydot, scale, id) {
+    super(x, y, xdot, ydot, scale, id)
     this.speedMax = 3
+    this.children = 0
   }
 
-  stepForward(foodList, fishList, sharkList) {
-    if (this.checkWalls(this.x,this.y)) {
-      this.rePlace()
+  async stepForward(foodList, fishList, sharkList) { 
+    this.scale -= 0.001
+    if (this.scale < 0.75 || this.checkWalls(this.x,this.y)) {
+      removeOneDisplay("fish", this.id)
+      for(var i = 0; i < fishList.length; i++) {
+        if (fishList[i] && fishList[i].id === this.id) delete fishList[i]
+      }
+      return
     }
-    if (!this.needToAvoidWall()) {
-      if (!this.avoidShark(sharkList)) {
+    if (this.scale > 1.5) {
+      this.scale = 1
+      fishList.push(new Fish(this.x, this.y, 0, 0, 0.8, `${this.id}.${this.children}`))
+      createOneDisplay("fish", `${this.id}.${this.children}`)
+      this.children++
+    }
+    if (!this.avoidWall()) {
+      if(!this.avoidShark(sharkList)) {
         this.flock(fishList)
         this.goTo(foodList)
       }
     }
     this.move(this.speedMax)
+    return {x: this.x, y: this.y, angle: this.angle, scale: this.scale, id: this.id, type: "fish"}
   }
 
   goTo(foodList) {
@@ -39,6 +52,7 @@ class Fish extends Boid{
       }
       if ( distance < food.size ) {
         food.eaten()
+        this.scale += 0.002
       }
     })
     if (!foodInSight) {
@@ -50,7 +64,7 @@ class Fish extends Boid{
   flock(fishList) {
     this.nearfishs = []
     fishList.forEach(fish => {
-      if(this.id === fish.id) {
+      if(!fish || this.id === fish.id) {
         return true
       }
       var distance = ((fish.x - this.x)**2 + (fish.y - this.y)**2)**0.5
@@ -101,6 +115,7 @@ class Fish extends Boid{
   avoidShark(sharkList) {
     var avoiding = false
     sharkList.forEach(shark => {
+      // if (!shark)
       var distance = ((shark.x - this.x)**2 + (shark.y - this.y)**2)**0.5
       if( distance < 60 ) {
         this.xdot += (this.x - shark.x) * 2/(distance + 5)
@@ -112,7 +127,7 @@ class Fish extends Boid{
   }
 
   eaten() {
-    this.rePlace()
+    this.scale = 0
   }
 }
 

@@ -23,6 +23,7 @@ body {
   border-radius: 50%;
   background-color: rgb(10, 116, 10);
   transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(10, 116, 10, 1) 60%, rgba(10, 116, 10, 0.2) 80%, rgba(0, 0, 0, 0) 100%)
 }
 
 .fish {

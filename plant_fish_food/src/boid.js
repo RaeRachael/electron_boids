@@ -1,12 +1,13 @@
 
 class Boid {
 
-  constructor(x,y,xdot,ydot,id) {
+  constructor(x,y,xdot,ydot,scale,id) {
     this.x = x
     this.y = y
     this.xdot = xdot
     this.ydot = ydot
     this.angle = Math.atan2(this.xdot,-this.ydot)
+    this.scale = scale
     this.id = id
     this.speedMax = 4
   }
@@ -27,7 +28,7 @@ class Boid {
     this.y += this.ydot
   }
 
-  needToAvoidWall() {
+  avoidWall() {
     var avoid = false
     for(var angle = -6; angle <= 6; angle++) {
       var distance = this.collisionWall(angle)
