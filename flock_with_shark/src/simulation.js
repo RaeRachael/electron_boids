@@ -2,26 +2,49 @@ const { createFish } = require("./src/fish")
 const { createSharks } = require("./src/shark")
 
 const startingFormButton = document.querySelector("#starting-form")
+const resetFormButton = document.querySelector("#reset-form")
+let runningSim = false
 
-startingFormButton.addEventListener("submit", function(event){
-  event.preventDefault();   // stop the form from submitting
-  let fishNumber = document.getElementById("fish-number").value
-  let sharkNumber = document.getElementById("shark-number").value
-  
-  var fishList = createFish(fishNumber)
-  var sharkList = createSharks(sharkNumber)
+if (!runningSim) {
+  startingFormButton.addEventListener("submit", function(event){
+    event.preventDefault();   // stop the form from submitting
+    let fishNumber = document.getElementById("fish-number").value
+    let sharkNumber = document.getElementById("shark-number").value
+    
+    var fishList = createFish(fishNumber)
+    var sharkList = createSharks(sharkNumber)
 
-  startingFormButton.innerHTML = ""
-  const simulationBox = document.getElementById('simulation-box')
-  simulationBox.style.visibility="visible"
+    const simulationBox = document.getElementById('simulation-box')
+    simulationBox.style.width = "1200px"
+    simulationBox.style.height = "600px"
+    simulationBox.style.visibility="visible"
+    startingFormButton.style.visibility="hidden"
+    resetFormButton.style.visibility="visible"
 
-  createDisplay(simulationBox, fishList, sharkList)
+    createDisplay(simulationBox, fishList, sharkList)
 
-  setInterval(() => {
-    drawSimulation(fishList, sharkList)
-  }, 10);
+    runningSim = true
+    let simulation = setInterval(() => {
+      drawSimulation(fishList, sharkList)
+    }, 50);
 
-})
+  })
+} else {
+  resetFormButton.addEventListener("submit", function(event){
+    event.preventDefault();   // stop the form from submitting
+
+    const simulationBox = document.getElementById('simulation-box')
+    simulationBox.style.width = "1200px"
+    simulationBox.style.height = "0px"
+    simulationBox.style.visibility="hidden"
+    startingFormButton.style.visibility="visible"
+    resetFormButton.style.visibility="hidden"
+
+    runningSim = false
+    clearInterval(simulation)
+  })
+
+}
 
 function createDisplay(simulationBox, fishList, sharkList) {
   fishList.forEach(fish => {

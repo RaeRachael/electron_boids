@@ -8,15 +8,6 @@
   <title>Boids</title>
 </head>
 <body>
-  <form action="#" id="starting-form">
-    Fish Number:<br>
-    <input type="number" name="Fish" id="fish-number">
-    <br>
-    Shark Number:<br>
-    <input type="number" name="lastname" id="shark-number">
-    <br><br>
-    <input id="submit" type="submit" value="submit">
-</form>
   <div id="simulation-box" style="visibility: hidden">
     <div class="circle wall top left"></div>
     <div class="circle wall top right"></div>
@@ -24,6 +15,18 @@
     <div class="circle wall bottom right"></div>
     <div class="circle wall middle center"></div>
   </div>
+  <form action="#" id="reset-form" style="visibility: hidden;"> 
+    <input id="submit" type="submit" value="restart">
+  </form>
+  <form action="#" id="starting-form" style="visibility: visible;">
+    Fish Number:<br>
+    <input type="number" name="Fish" id="fish-number">
+    <br>
+    Shark Number:<br>
+    <input type="number" name="lastname" id="shark-number">
+    <br><br>
+    <input id="submit" type="submit" value="submit">
+  </form>
   <script src="./src/simulation.js"></script>
 </body>
 </html>
