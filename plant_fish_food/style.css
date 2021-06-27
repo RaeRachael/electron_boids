@@ -1,0 +1,50 @@
+body {
+  margin: 20px;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+#simulation-box {
+  padding: auto;
+  overflow: hidden;
+  background-color:black;
+  width: 1200px;
+  /* height: 600px; */
+  border: red solid 5px;
+}
+
+.wall {
+  border: red solid 5px;
+}
+
+.food {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgb(10, 116, 10);
+  transform: translate(-50%, -50%);
+}
+
+.fish {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-style: solid;
+  border-width: 0 3px 10px 3px;
+  border-color: transparent transparent #4f46e5 transparent;
+  transform-origin: center center;
+}
+
+.shark {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-style: solid;
+  border-width: 0 7px 20px 7px;
+  border-color: transparent transparent #d8159d transparent;
+  transform-origin: center center;
+}
