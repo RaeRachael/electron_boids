@@ -12,7 +12,7 @@ class Fish extends Boid{
 
   constructor(x,y,xdot,ydot,id) {
     super(x,y,xdot,ydot,id)
-    this.speedMax = 4
+    this.speedMax = 3
   }
 
   stepForward(foodList, fishList, sharkList) {
@@ -21,31 +21,30 @@ class Fish extends Boid{
     }
     if (!this.needToAvoidWall()) {
       if (!this.avoidShark(sharkList)) {
-        if(!this.goTo(foodList)) {
-          this.flock(fishList)
-        }
+        this.flock(fishList)
+        this.goTo(foodList)
       }
     }
     this.move(this.speedMax)
   }
 
   goTo(foodList) {
-    var goTo = false
+    var foodInSight = false
     foodList.forEach(food => {
       var distance = ((food.x - this.x)**2 + (food.y - this.y)**2)**0.5
-      if( distance < food.size ) {
-        this.xdot += (this.x - food.x) * -0.05
-        this.ydot += (this.y - food.y) * -0.05
+      if ( distance < 40 + food.size ) {
+        this.xdot += (this.x - food.x) * -1/(distance + 5)
+        this.ydot += (this.y - food.y) * -1/(distance + 5)
+        foodInSight = true
+      }
+      if ( distance < food.size ) {
         food.eaten()
-        goTo = false
-        return 1
-      } else if ( distance + food.size < 60 ) {
-        this.xdot += (this.x - food.x) * -0.1 * food.size/(distance)
-        this.ydot += (this.y - food.y) * -0.1 * food.size/(distance)
-        goTo = true
       }
     })
-    return goTo
+    if (!foodInSight) {
+      this.xdot *= 1.05
+      this.ydot *= 1.05
+    }
   }
 
   flock(fishList) {
@@ -84,8 +83,8 @@ class Fish extends Boid{
   spreadOut() {
     this.nearfishs.forEach(nearfish => {
       var distance = ((nearfish.x - this.x)**2 + (nearfish.y - this.y)**2)**0.5
-      this.xdot += (this.x - nearfish.x) * 0.1/distance
-      this.ydot += (this.y - nearfish.y) * 0.1/distance
+      this.xdot += (this.x - nearfish.x) * 0.2/(distance + 5)
+      this.ydot += (this.y - nearfish.y) * 0.2/(distance + 5)
     })
   }
 
@@ -103,9 +102,9 @@ class Fish extends Boid{
     var avoiding = false
     sharkList.forEach(shark => {
       var distance = ((shark.x - this.x)**2 + (shark.y - this.y)**2)**0.5
-      if( distance < 40 ) {
-        this.xdot += (this.x - shark.x) * 0.8/distance
-        this.ydot += (this.y - shark.y) * 0.8/distance
+      if( distance < 60 ) {
+        this.xdot += (this.x - shark.x) * 2/(distance + 5)
+        this.ydot += (this.y - shark.y) * 2/(distance + 5)
         avoiding = true
       }
     })

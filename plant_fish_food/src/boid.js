@@ -61,12 +61,6 @@ class Boid {
     if(x_test < 0 || x_test > 1200 || y_test < 0 || y_test > 600) {
       return true
     }
-    var circles = [{x: -25, y: -25}, {x: 1225, y: -25}, {x: -25, y: 625}, {x: 1225, y: 625}, {x: 600, y: 300}]
-    for(var i = 0; i < circles.length; i++) {
-      if ( (x_test - circles[i].x)**2 + (y_test - circles[i].y)**2 < 100**2) {
-        return true
-      }
-    }
   }
 }
 

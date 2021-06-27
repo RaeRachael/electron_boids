@@ -92,6 +92,7 @@ function displayOneFood(food, index) {
   foodDisplay.style.top = `${food.y +25}px`
   foodDisplay.style.width = `${food.size *2}px`
   foodDisplay.style.height = `${food.size *2}px`
+  foodDisplay.style.opacity = `${food.size/100 - 0.1}`
 }
 
 function displayOneFish(fish, index) {
