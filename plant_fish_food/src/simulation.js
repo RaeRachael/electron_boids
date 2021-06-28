@@ -8,6 +8,8 @@ let runningSim = false
 let foodList = []
 let fishList = []
 let sharkList = []
+let resultList = []
+let resultHTML = ""
 let simulation
 
 startingFormButton.addEventListener("submit", function(event){
@@ -20,6 +22,8 @@ startingFormButton.addEventListener("submit", function(event){
   fishList = createFish(fishNumber)
   sharkList = createSharks(sharkNumber)
 
+  const simulationResults = document.getElementById('simulation-results')
+  simulationResults.innerHTML = ""
   const simulationBox = document.getElementById('simulation-box')
   simulationBox.style.height = "600px"
   simulationBox.style.visibility = "visible"
@@ -38,7 +42,7 @@ resetButton.addEventListener("click", function(event){
   event.preventDefault();   // stop the form from submitting
 
   const simulationBox = document.getElementById('simulation-box')
-  simulationBox.innerHTML=""
+  simulationBox.innerHTML= ""
   simulationBox.style.height = "0px"
   simulationBox.style.visibility = "hidden"
   startingFormButton.style.visibility = "visible"
@@ -46,7 +50,29 @@ resetButton.addEventListener("click", function(event){
 
   runningSim = false
   clearInterval(simulation)
+  displayResults()
 })
+
+function displayResults() {
+  const simulationResults = document.getElementById('simulation-results')
+  resultList = []
+  fishList.forEach(fish => {
+    if (fish) {
+      resultList.push(fish)
+    }
+  })
+  sharkList.forEach(shark => {
+    if (shark) {
+      resultList.push(shark)
+    }
+  })
+  resultHTML = "<ul>"
+  resultList.forEach(result => {
+    resultHTML += `<li>id: ${result.id}  speedMax: ${result.speedMax}  sight: ${result.sight}  size: ${result.size}</li>`
+  })
+  resultHTML += "</ul>"
+  simulationResults.innerHTML = resultHTML
+}
 
 function createDisplay(foodList, fishList, sharkList) {
   foodList.forEach(food => {
@@ -61,7 +87,6 @@ function createDisplay(foodList, fishList, sharkList) {
 }
 
 function createOneDisplay(type, index) {
-  console.log(type, index)
   const simulationBox = document.getElementById('simulation-box')
   const display = document.createElement('div')
   display.setAttribute("id", `${type}-${index}`)
@@ -121,7 +146,7 @@ function displayOneFish(fish) {
   if (!fishDisplay) return
   fishDisplay.style.left = `${fish.x+25}px`
   fishDisplay.style.top = `${fish.y+25}px`
-  fishDisplay.style.borderWidth = `0 ${3*fish.scale}px ${10*fish.scale}px ${3*fish.scale}px`
+  fishDisplay.style.borderWidth = `0 ${3*fish.size}px ${10*fish.size}px ${3*fish.size}px`
   fishDisplay.style.transform = `translate(-50%, -50%) rotate(${fish.angle}rad)`
 }
 
@@ -130,6 +155,6 @@ function displayOneShark(shark) {
   if (!sharkDisplay) return
   sharkDisplay.style.left = `${shark.x+25}px`
   sharkDisplay.style.top = `${shark.y+25}px`
-  sharkDisplay.style.borderWidth = `0 ${7*shark.scale}px ${20*shark.scale}px ${7*shark.scale}px`
+  sharkDisplay.style.borderWidth = `0 ${7*shark.size}px ${20*shark.size}px ${7*shark.size}px`
   sharkDisplay.style.transform = `translate(-50%, -50%) rotate(${shark.angle}rad)`
 }

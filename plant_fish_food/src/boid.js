@@ -1,13 +1,13 @@
 
 class Boid {
 
-  constructor(x,y,xdot,ydot,scale,id) {
+  constructor(x,y,xdot,ydot,size,id) {
     this.x = x
     this.y = y
     this.xdot = xdot
     this.ydot = ydot
     this.angle = Math.atan2(this.xdot,-this.ydot)
-    this.scale = scale
+    this.size = size
     this.id = id
     this.speedMax = 4
   }
