@@ -14,6 +14,7 @@ class Shark extends Boid {
     super(x, y, xdot, ydot, scale, id)
     this.food = 100
     this.children = 0
+    this.senseDistance = 60
   }
 
   async stepForward(fishList, sharkList) {
@@ -52,27 +53,32 @@ class Shark extends Boid {
     fishList.forEach(fish => {
       if (fish) {
         var distance = ((fish.x - this.x)**2 + (fish.y - this.y)**2)**0.5
-        if( distance < 60 ) {
+        if( distance < this.senseDistance ) {
           chase = true
-          if (distance < 8 * this.scale) {
+          if (distance < 10 * this.scale) {
             this.feed(fish)
           }
           else {
-            this.xdot += (this.x - fish.x) * -0.5/distance
-            this.ydot += (this.y - fish.y) * -0.5/distance
-            chase = true
+            this.xdot += (this.x - fish.x - 5*fish.xdot) * -0.5/distance
+            this.ydot += (this.y - fish.y - 5*fish.ydot) * -0.5/distance
           }
         }
       }
     })
-    if (!chase) {
+    if (chase) {
+      this.senseDistance *= 0.95
+      if (this.senseDistance < 20) this.senseDistance = 20
+    } else {
+      this.senseDistance *= 1.2
       this.xdot *= 1.5
       this.ydot *= 1.5
+      if (this.senseDistance > 100) this.senseDistance = 100
     }
+    console.log(chase, this.senseDistance)
   }
 
   feed(fish) {
-    this.food += 100
+    this.food += 20
     fish.eaten()
   }
 }

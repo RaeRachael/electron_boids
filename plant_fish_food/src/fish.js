@@ -30,6 +30,9 @@ class Fish extends Boid{
       fishList.push(new Fish(this.x, this.y, 0, 0, 0.8, `${this.id}.${this.children}`))
       createOneDisplay("fish", `${this.id}.${this.children}`)
       this.children++
+      fishList.push(new Fish(this.x, this.y, 0, 0, 0.8, `${this.id}.${this.children}`))
+      createOneDisplay("fish", `${this.id}.${this.children}`)
+      this.children++
     }
     if (!this.avoidWall()) {
       if(!this.avoidShark(sharkList)) {
@@ -97,8 +100,8 @@ class Fish extends Boid{
   spreadOut() {
     this.nearfishs.forEach(nearfish => {
       var distance = ((nearfish.x - this.x)**2 + (nearfish.y - this.y)**2)**0.5
-      this.xdot += (this.x - nearfish.x) * 0.2/(distance + 5)
-      this.ydot += (this.y - nearfish.y) * 0.2/(distance + 5)
+      this.xdot += (this.x - nearfish.x) * 0.4/(distance + 5)
+      this.ydot += (this.y - nearfish.y) * 0.4/(distance + 5)
     })
   }
 
