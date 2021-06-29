@@ -3,7 +3,7 @@ const {Boid} = require('./boid.js')
 function createFish(number) {
   var fishList = []
   for(var i = 0; i < number; i++) {
-    fishList.push(new Fish(50+Math.random()*1100, 50+Math.random()*500, Math.random()*2, Math.random()*2, 1, i, 3, 60))
+    fishList.push(new Fish(50+Math.random()*1100, 50+Math.random()*500, Math.random()*2, Math.random()*2, 1, i, 3, 30))
   }
   return fishList
 }
@@ -46,7 +46,7 @@ class Fish extends Boid{
 
   giveBirth(fishList) {
     if ( (this.size**2 - this.childSize**2)**0.5 > this.childSize) {
-      fishList.push(new Fish(this.x, this.y, 0, 0, this.childSize, `${this.id}.${this.children}`, this.speedMax + 0.5-Math.random(), this.sight + 10-Math.random()*20))
+      fishList.push(new Fish(this.x, this.y, 0, 0, this.childSize, `${this.id}.${this.children}`, this.speedMax + 0.5-Math.random(), this.sight + 5-Math.random()*10))
       createOneDisplay("fish", `${this.id}.${this.children}`)
       this.children++
       this.size = (this.size**2 - this.childSize**2)**0.5

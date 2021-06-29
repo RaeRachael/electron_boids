@@ -68,7 +68,11 @@ function displayResults() {
   })
   resultHTML = "<ul>"
   resultList.forEach(result => {
-    resultHTML += `<li>id: ${result.id}  speedMax: ${result.speedMax}  sight: ${result.sight}  size: ${result.size}</li>`
+    if (result.maxSight) {
+      resultHTML += `<li>id: ${result.id}  speedMax: ${result.speedMax}  maxSight: ${result.maxSight}  size: ${result.size}</li>`
+    } else {
+      resultHTML += `<li>id: ${result.id}  speedMax: ${result.speedMax}  sight: ${result.sight}  size: ${result.size}</li>`
+    }
   })
   resultHTML += "</ul>"
   simulationResults.innerHTML = resultHTML

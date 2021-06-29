@@ -20,7 +20,7 @@ class Shark extends Boid {
     this.childSize = 0.8
     this.minSight = minSight
     this.maxSight = maxSight
-    this.energyUsageRate = 0.25 * ((this.speedMax/5)**2 + this.maxSight/100 + (50 - this.minSight)/30)
+    this.energyUsageRate = 0.5 * ((this.speedMax/5)**2 + this.maxSight/100)
     console.log("shark", this.size, this.energyUsageRate, this.speedMax, this.maxSight, this.minSight)
   }
 
@@ -28,7 +28,7 @@ class Shark extends Boid {
     this.food -= this.energyUsageRate
     if (this.food < 0) {
       this.food = 100
-      this.size -= 0.005
+      this.size -= 0.01
     }
     if (this.food > 100) {
       this.food -= 50
@@ -90,7 +90,7 @@ class Shark extends Boid {
   }
 
   feed(fish) {
-    this.food += 20
+    this.food += 40 * fish.size
     fish.eaten()
   }
 }
