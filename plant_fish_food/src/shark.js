@@ -90,7 +90,7 @@ class Shark extends Boid {
   }
 
   feed(fish) {
-    this.food += 40 * fish.size
+    this.food += 20 * fish.size
     fish.eaten()
   }
 }
